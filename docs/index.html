@@ -374,7 +374,9 @@ document.addEventListener('DOMContentLoaded', () => {
 // ── Cargar data.json ──────────────────────────────────────────
 async function init() {
   try {
-    const res  = await fetch('data.json');
+    // Ruta relativa al index.html — funciona en GitHub Pages /repo/ y dominio propio
+    const dataUrl = new URL('./data.json', location.href).href;
+    const res  = await fetch(dataUrl);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const prods = data.productos;
