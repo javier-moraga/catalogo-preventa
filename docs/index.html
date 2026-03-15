@@ -16,90 +16,144 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{font-family:var(--font);background:var(--bg);color:var(--texto);font-size:14px}
-.header{background:var(--rojo);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100}
-.logo{width:34px;height:34px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.logo span{color:var(--rojo);font-weight:700;font-size:12px}
-.hinfo h1{font-size:16px;font-weight:600;line-height:1.2}
-.hinfo p{font-size:11px;opacity:.8;margin-top:1px}
-.hmeta{margin-left:auto;text-align:right;font-size:11px;opacity:.8;line-height:1.5}
+
+/* HEADER */
+.header{background:var(--rojo);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+.logo{width:32px;height:32px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo span{color:var(--rojo);font-weight:700;font-size:11px}
+.hinfo h1{font-size:14px;font-weight:600;line-height:1.2}
+.hinfo p{font-size:10px;opacity:.8;margin-top:1px}
+.hmeta{margin-left:auto;text-align:right;font-size:10px;opacity:.85;line-height:1.5;white-space:nowrap}
+
+/* LOADING */
 .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px;color:var(--muted)}
 .spinner{width:36px;height:36px;border:3px solid var(--borde);border-top-color:var(--rojo);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.error{background:#FFEBEE;border:1px solid #FFCDD2;border-radius:var(--r);padding:20px;margin:24px;color:#B71C1C;font-size:13px;line-height:1.6}
-.controles{padding:12px 16px 8px;background:var(--blanco);border-bottom:1px solid var(--borde);position:sticky;top:64px;z-index:90}
-.srow{display:flex;gap:8px;align-items:center;margin-bottom:10px}
-.sinput{flex:1;padding:9px 14px;border:1px solid var(--borde);border-radius:20px;font-size:13px;background:var(--blanco)}
+.error{background:#FFEBEE;border:1px solid #FFCDD2;border-radius:var(--r);padding:20px;margin:16px;color:#B71C1C;font-size:13px;line-height:1.6}
+
+/* CONTROLES — barra fija con filtros colapsables */
+.controles{background:var(--blanco);border-bottom:1px solid var(--borde);position:sticky;top:56px;z-index:90}
+
+/* Fila de búsqueda + botón filtros */
+.search-bar{display:flex;gap:8px;align-items:center;padding:10px 12px}
+.sinput{flex:1;padding:9px 14px;border:1px solid var(--borde);border-radius:20px;font-size:13px;background:var(--blanco);min-width:0}
 .sinput:focus{outline:none;border-color:var(--rojo)}
-.fila{margin-bottom:8px}
+
+/* Botón toggle filtros */
+.btn-filtros{display:flex;align-items:center;gap:5px;padding:8px 12px;border:1px solid var(--borde);border-radius:20px;background:var(--blanco);cursor:pointer;font-size:12px;color:var(--muted);white-space:nowrap;flex-shrink:0;transition:.15s}
+.btn-filtros.tiene-activos{border-color:var(--rojo);color:var(--rojo);background:var(--rojo-c)}
+.btn-filtros svg{transition:transform .2s}
+.btn-filtros.abierto svg{transform:rotate(180deg)}
+
+/* Panel colapsable */
+.filtros-panel{display:none;padding:0 12px 10px;border-top:1px solid var(--borde)}
+.filtros-panel.visible{display:block}
+.fila{margin-top:10px}
 .flbl{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
 .filtros{display:flex;gap:5px;flex-wrap:wrap}
-.fb{padding:5px 12px;border:1px solid var(--borde);border-radius:14px;background:var(--blanco);cursor:pointer;font-size:12px;color:var(--muted);white-space:nowrap;transition:.15s}
-.fb:hover{border-color:var(--rojo);color:var(--rojo)}
+.fb{padding:5px 11px;border:1px solid var(--borde);border-radius:14px;background:var(--blanco);cursor:pointer;font-size:12px;color:var(--muted);white-space:nowrap;transition:.15s;-webkit-tap-highlight-color:transparent}
+.fb:active{opacity:.7}
 .fb.act{background:var(--rojo);color:#fff;border-color:var(--rojo)}
 .fb.act-v{background:#7B3F00;color:#fff;border-color:#7B3F00}
+.fb.fb-var.act-v{background:var(--vt);color:#fff;border-color:var(--vt)}
+.fb.fb-var:not(.act-v):hover{border-color:var(--vt);color:var(--vt)}
 .fb.act-f{background:var(--azul);color:#fff;border-color:var(--azul)}
 .cnt{font-size:10px;background:rgba(0,0,0,.1);border-radius:8px;padding:1px 5px;margin-left:2px}
 .fb.act .cnt,.fb.act-v .cnt,.fb.act-f .cnt{background:rgba(255,255,255,.25)}
-.resumen{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;padding:10px 16px;background:var(--blanco);border-bottom:1px solid var(--borde)}
-.rc{background:var(--gris);border-radius:var(--rs);padding:8px 12px;text-align:center}
-.rc .rv{font-size:18px;font-weight:700;color:var(--rojo)}
-.rc .rl{font-size:10px;color:var(--muted);margin-top:2px}
-.lista{padding:12px 16px;display:flex;flex-direction:column;gap:10px}
+
+/* Resumen compacto — 2 filas en móvil */
+.resumen{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px 12px;background:var(--blanco);border-bottom:1px solid var(--borde)}
+.rc{background:var(--gris);border-radius:var(--rs);padding:7px 10px;text-align:center}
+.rc .rv{font-size:16px;font-weight:700;color:var(--rojo)}
+.rc .rl{font-size:10px;color:var(--muted);margin-top:1px}
+
+/* LISTA */
+.lista{padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+
+/* CARD */
 .pcard{background:var(--blanco);border:1px solid var(--borde);border-radius:var(--r);overflow:hidden}
-.pcard-hdr{padding:14px 16px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;user-select:none}
-.pcard-hdr:hover{background:var(--gris)}
+.pcard-hdr{padding:12px 14px;display:flex;gap:10px;align-items:flex-start;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.pcard-hdr:active{background:var(--gris)}
 .pnombre{flex:1;min-width:0}
-.pnombre h3{font-size:13px;font-weight:500;line-height:1.4;margin-bottom:5px}
-.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
-.tag{display:inline-block;font-size:10px;font-weight:600;padding:3px 9px;border-radius:10px;white-space:nowrap}
+.pnombre h3{font-size:13px;font-weight:500;line-height:1.35;margin-bottom:4px}
+.tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px}
+.tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:8px;white-space:nowrap}
 .tag-rc{background:#FFF3E0;color:#E65100}
 .tag-prog{background:var(--azul-c);color:var(--azul);font-size:9px}
 .tag-fijo{background:var(--gris2);color:var(--muted)}
-.tag-var{background:#F3E5F5;color:#6A1B9A}
+.tag-var{font-size:10px}
 .tag-fmt{background:#E8F5E9;color:#1B5E20}
 .pprecios{text-align:right;flex-shrink:0}
-.p-promo{font-size:20px;font-weight:700;color:var(--rojo);line-height:1}
+.p-promo{font-size:18px;font-weight:700;color:var(--rojo);line-height:1}
 .p-lista{font-size:11px;color:var(--muted);text-decoration:line-through;margin-bottom:1px}
 .p-unit{font-size:11px;color:var(--muted)}
-.chev{font-size:18px;color:var(--muted);flex-shrink:0;margin-top:2px;transition:transform .2s}
+.chev{font-size:16px;color:var(--muted);flex-shrink:0;margin-top:2px;transition:transform .2s}
 .pcard.open .chev{transform:rotate(180deg)}
 .pcard-body{display:none;border-top:1px solid var(--borde)}
 .pcard.open .pcard-body{display:block}
-.cant-wrap{padding:12px 16px;background:var(--gris);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+
+/* Selector packs */
+.cant-wrap{padding:10px 14px;background:var(--gris);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .cant-lbl{font-size:11px;color:var(--muted);font-weight:500;white-space:nowrap}
-.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.chip{padding:5px 13px;border:1px solid var(--borde);border-radius:14px;cursor:pointer;font-size:12px;background:var(--blanco);transition:.15s;white-space:nowrap}
-.chip:hover{border-color:var(--rojo);color:var(--rojo)}
+.chips{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.chip{padding:6px 12px;border:1px solid var(--borde);border-radius:14px;cursor:pointer;font-size:12px;background:var(--blanco);white-space:nowrap;-webkit-tap-highlight-color:transparent;min-height:34px;display:flex;align-items:center}
+.chip:active{opacity:.7}
 .chip.sel{background:var(--rojo);color:#fff;border-color:var(--rojo)}
 .chip.best{border-color:var(--verde);color:var(--verde-d);background:var(--verde-c)}
 .chip.best.sel{background:var(--verde);color:#fff}
-.cant-inp{width:72px;padding:5px 10px;border:1px solid var(--borde);border-radius:14px;font-size:12px;text-align:center}
+.cant-inp{width:68px;padding:6px 8px;border:1px solid var(--borde);border-radius:14px;font-size:12px;text-align:center;min-height:34px}
 .cant-inp:focus{outline:none;border-color:var(--rojo)}
-.metricas{padding:12px 16px}
-.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:12px}
-.met{background:var(--gris);border-radius:var(--rs);padding:10px 12px}
-.met .ml{font-size:11px;color:var(--muted);margin-bottom:3px}
-.met .mv{font-size:18px;font-weight:700;line-height:1.1}
+
+/* Métricas */
+.metricas{padding:10px 14px}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.met{background:var(--gris);border-radius:var(--rs);padding:9px 10px}
+.met .ml{font-size:10px;color:var(--muted);margin-bottom:2px}
+.met .mv{font-size:16px;font-weight:700;line-height:1.1}
 .met .ms{font-size:10px;color:var(--muted);margin-top:2px}
 .met.ok{background:var(--verde-c)}.met.ok .mv{color:var(--verde-d)}
 .met.ah{background:#FFF3E0}.met.ah .mv{color:#BF360C}
 .met.az{background:var(--azul-c)}.met.az .mv{color:var(--azul)}
-.trib{background:var(--azul-c);border-radius:var(--rs);padding:10px 14px;margin-bottom:10px;font-size:12px}
-.trib-t{font-size:10px;font-weight:600;color:var(--azul);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px}
+.met.full{grid-column:1/-1}
+
+/* Tributario */
+.trib{background:var(--azul-c);border-radius:var(--rs);padding:10px 12px;margin-bottom:8px;font-size:12px}
+.trib-t{font-size:10px;font-weight:600;color:var(--azul);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
 .tr{display:flex;justify-content:space-between;padding:3px 0;color:#1a3a5c}
-.tr.tot{font-weight:700;border-top:1px solid #bed3e8;padding-top:6px;margin-top:3px}
-.arg{background:var(--amber-c);border-left:3px solid var(--amber);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;margin-bottom:10px;font-size:12px;line-height:1.6;color:#4A3500}
+.tr.tot{font-weight:700;border-top:1px solid #bed3e8;padding-top:5px;margin-top:2px}
+
+/* Argumento */
+.arg{background:var(--amber-c);border-left:3px solid var(--amber);border-radius:0 var(--rs) var(--rs) 0;padding:10px 12px;margin-bottom:8px;font-size:12px;line-height:1.6;color:#4A3500}
+
+/* TABLA — scroll horizontal en móvil */
 .tramos-wrap{margin-top:4px}
 .tramos-t{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
-.ttable{width:100%;border-collapse:collapse;font-size:12px}
-.ttable th{background:var(--azul);color:#fff;padding:7px 10px;text-align:left;font-weight:500;font-size:11px}
-.ttable td{padding:7px 10px;border-bottom:1px solid var(--borde)}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--rs);border:1px solid var(--borde)}
+.table-scroll::-webkit-scrollbar{height:3px}
+.table-scroll::-webkit-scrollbar-thumb{background:var(--borde);border-radius:3px}
+.ttable{width:100%;border-collapse:collapse;font-size:12px;min-width:380px}
+.ttable th{background:var(--azul);color:#fff;padding:8px 10px;text-align:left;font-weight:500;font-size:11px;white-space:nowrap}
+.ttable td{padding:8px 10px;border-bottom:1px solid var(--borde);white-space:nowrap}
 .ttable tr:last-child td{border-bottom:none}
 .ttable tr.act-row td{background:var(--verde-c);color:var(--verde-d);font-weight:500}
 .ttable tr.act-row td:first-child::before{content:"\25B6 "}
 .pill{display:inline-block;padding:2px 8px;border-radius:10px;font-weight:600;background:var(--azul-c);color:var(--azul);font-size:11px}
 .pill.best{background:var(--verde-c);color:var(--verde-d)}
-.footer{text-align:center;padding:20px;color:var(--muted);font-size:11px;border-top:1px solid var(--borde);margin-top:8px;line-height:1.8}
+
+/* Footer */
+.footer{text-align:center;padding:20px 16px;color:var(--muted);font-size:11px;border-top:1px solid var(--borde);margin-top:8px;line-height:1.8}
+
+/* Desktop — ampliar grid de métricas en pantallas grandes */
+@media(min-width:600px){
+  .mg{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+  .met.full{grid-column:auto}
+  .resumen{grid-template-columns:repeat(4,1fr)}
+  .controles{top:64px}
+  .header{padding:14px 20px}
+  .hinfo h1{font-size:16px}
+  .lista{padding:12px 16px}
+  .search-bar{padding:12px 16px}
+}
 </style>
 </head>
 <body>
@@ -107,86 +161,132 @@ html,body{font-family:var(--font);background:var(--bg);color:var(--texto);font-s
 <div class="header">
   <div class="logo"><span>mi</span></div>
   <div class="hinfo">
-    <h1>Analizador de precios &middot; Vinos</h1>
-    <p>Preventa &middot; Coca-Cola Andina Chile</p>
+    <h1>Analizador de precios · Vinos</h1>
+    <p>Preventa · Coca-Cola Andina Chile</p>
   </div>
   <div class="hmeta" id="HM">Cargando...</div>
 </div>
 
 <div class="loading" id="LOADING">
   <div class="spinner"></div>
-  <p>Cargando cat&aacute;logo...</p>
+  <p>Cargando catálogo...</p>
 </div>
 
 <div id="APP" style="display:none">
   <div class="controles">
-    <div class="srow">
-      <input class="sinput" id="SI" type="text" placeholder="Buscar por nombre, varietal, marca...">
+    <!-- Búsqueda + toggle filtros -->
+    <div class="search-bar">
+      <input class="sinput" id="SI" type="text" placeholder="Buscar producto, varietal...">
+      <button class="btn-filtros" id="BTN_F" onclick="toggleFiltros()">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M2 4h12M4 8h8M6 12h4"/>
+        </svg>
+        Filtros <span id="BADGE_F" style="display:none;background:var(--rojo);color:#fff;border-radius:8px;padding:0 5px;font-size:10px;margin-left:2px">0</span>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M2 4l4 4 4-4"/>
+        </svg>
+      </button>
     </div>
-    <div class="fila">
-      <div class="flbl">Programa</div>
-      <div class="filtros">
-        <button class="fb act" onclick="setF('prog','todos',this)">Todos <span class="cnt" id="cT">0</span></button>
-        <button class="fb" onclick="setF('prog','rc',this)">Con RC <span class="cnt" id="cR">0</span></button>
-        <button class="fb" onclick="setF('prog','sinrc',this)">Sin RC <span class="cnt" id="cS">0</span></button>
-        <button class="fb" onclick="setF('prog','botell',this)">Botell+Corrientes <span class="cnt" id="cB">0</span></button>
-        <button class="fb" onclick="setF('prog','finos',this)">Finos <span class="cnt" id="cFi">0</span></button>
-        <button class="fb" onclick="setF('prog','premium',this)">Premium <span class="cnt" id="cP">0</span></button>
+
+    <!-- Panel colapsable -->
+    <div class="filtros-panel" id="PANEL_F">
+      <div class="fila">
+        <div class="flbl">Programa</div>
+        <div class="filtros">
+          <button class="fb act" onclick="setF('prog','todos',this)">Todos <span class="cnt" id="cT">0</span></button>
+          <button class="fb" onclick="setF('prog','rc',this)">Con RC <span class="cnt" id="cR">0</span></button>
+          <button class="fb" onclick="setF('prog','sinrc',this)">Sin RC <span class="cnt" id="cS">0</span></button>
+          <button class="fb" onclick="setF('prog','botell',this)">Botell+Corrientes <span class="cnt" id="cB">0</span></button>
+          <button class="fb" onclick="setF('prog','finos',this)">Finos <span class="cnt" id="cFi">0</span></button>
+          <button class="fb" onclick="setF('prog','premium',this)">Premium <span class="cnt" id="cP">0</span></button>
+        </div>
+      </div>
+      <div class="fila">
+        <div class="flbl">Formato (unidades por pack)</div>
+        <div class="filtros" id="F_FMT"><button class="fb act" onclick="setF('fmt','todos',this)">Todos</button></div>
+      </div>
+      <div class="fila">
+        <div class="flbl">Varietal / Cepa</div>
+        <div class="filtros" id="F_VAR"><button class="fb act" onclick="setF('var','todos',this)">Todos</button></div>
       </div>
     </div>
-    <div class="fila">
-      <div class="flbl">Formato (unidades por pack)</div>
-      <div class="filtros" id="F_FMT"><button class="fb act" onclick="setF('fmt','todos',this)">Todos</button></div>
-    </div>
-    <div class="fila">
-      <div class="flbl">Varietal / Cepa</div>
-      <div class="filtros" id="F_VAR"><button class="fb act" onclick="setF('var','todos',this)">Todos</button></div>
-    </div>
   </div>
+
   <div class="resumen" id="RES"></div>
   <div class="lista" id="LISTA"></div>
-  <div class="footer" id="FOOTER">
-    IVA 19% + ILA 20.5% (factor 1.395) &middot; Descuentos RC sobre precio promocional vigente
-  </div>
+  <div class="footer" id="FOOTER">IVA 19% + ILA 20.5% (factor 1.395) · Descuentos RC sobre precio promocional vigente</div>
 </div>
 
 <script>
+
+// ── Mapa de colores por varietal ─────────────────────────────
+const VAR_COLORS = {
+  'Cabernet Sauvignon': {t:'#6B1A2A', b:'#F5E6E9'},
+  'Carmenere':          {t:'#7B2D8B', b:'#F5EAF8'},
+  'Malbec':             {t:'#4A1060', b:'#EDE5F5'},
+  'Merlot':             {t:'#A0272A', b:'#FAEAEA'},
+  'Syrah':              {t:'#3D1F5E', b:'#EAE5F5'},
+  'Pinot Noir':         {t:'#C0392B', b:'#FDECEA'},
+  'Blend':              {t:'#5D4037', b:'#EFEBE9'},
+  'Sauvignon Blanc':    {t:'#1B6B3A', b:'#E6F4EC'},
+  'Chardonnay':         {t:'#B7860B', b:'#FEF9E7'},
+  'Moscatel':           {t:'#D4AC0D', b:'#FEF9E7'},
+  'Blanco':             {t:'#5D8A2F', b:'#EDF5E5'},
+  'Rose':               {t:'#C2185B', b:'#FCE4EC'},
+  'Coctel':             {t:'#00838F', b:'#E0F7FA'},
+  'Uva de Mesa':        {t:'#558B2F', b:'#F1F8E9'},
+  'Late Harvest':       {t:'#E65100', b:'#FBE9E7'},
+  'Otro':               {t:'#607D8B', b:'#ECEFF1'},
+};
+
+function varColor(varietal) {
+  return VAR_COLORS[varietal] || VAR_COLORS['Otro'];
+}
+
 const clp = n => n != null ? '$' + Math.round(n).toLocaleString('es-CL') : '—';
 const pp  = n => n != null ? (+n).toFixed(1) + '%' : '—';
 let PRODS = [], FILTROS = {prog:'todos', fmt:'todos', var:'todos'};
 
-// ── Calcular tramo y argumento desde datos pre-calculados ─────
+// ── Toggle panel filtros ───────────────────────────────────────
+function toggleFiltros() {
+  const panel = document.getElementById('PANEL_F');
+  const btn   = document.getElementById('BTN_F');
+  const abierto = panel.classList.toggle('visible');
+  btn.classList.toggle('abierto', abierto);
+}
+
+function actualizarBadgeFiltros() {
+  const activos = [FILTROS.prog, FILTROS.fmt, FILTROS.var].filter(v => v !== 'todos').length;
+  const badge = document.getElementById('BADGE_F');
+  const btn   = document.getElementById('BTN_F');
+  badge.style.display = activos > 0 ? 'inline' : 'none';
+  badge.textContent   = activos;
+  btn.classList.toggle('tiene-activos', activos > 0);
+}
+
+// ── Lógica de datos ────────────────────────────────────────────
 function tramoParaCant(prod, cant) {
-  // Los tramos ya están calculados en data.json — buscar el más cercano
-  // Si la cantidad exacta no existe, usar el de mayor cant <= cant pedida
   const ts = prod.tramos.filter(t => t.cant <= cant);
   if (!ts.length) return prod.tramos[0];
   return ts.reduce((a, b) => b.cant > a.cant ? b : a);
 }
-
 function mejorTramo(prod) {
   return prod.tramos.reduce((a, b) => (b.desc_pct || 0) > (a.desc_pct || 0) ? b : a);
 }
-
 function argumento(prod, cant, tramo) {
   const ts = prod.tramos;
   if (!ts.length || !prod.tiene_rc) return null;
-  const mejor = mejorTramo(prod);
+  const mejor   = mejorTramo(prod);
   const esMejor = tramo.desc_pct === mejor.desc_pct && tramo.desc_pct > 0;
   const sinDesc = !tramo.desc_pct || tramo.desc_pct === 0;
-
-  // Siguiente tramo disponible
-  const mayor = ts.filter(t => t.desc_pct > (tramo.desc_pct || 0));
-  const sig = mayor.length ? mayor.reduce((a, b) => a.desc_pct < b.desc_pct ? a : b) : null;
-
+  const mayor   = ts.filter(t => t.desc_pct > (tramo.desc_pct || 0));
+  const sig     = mayor.length ? mayor.reduce((a, b) => a.desc_pct < b.desc_pct ? a : b) : null;
   if (sinDesc && sig) {
-    const d = sig.cant - cant;
-    if (d <= 0) return null;
+    const d = sig.cant - cant; if (d <= 0) return null;
     return `Con <strong>${d} pack${d>1?'s':''} más</strong> (total ${sig.cant}) activas el <strong>${pp(sig.desc_pct)} de descuento</strong> y ahorras <strong>${clp(sig.ah_promo)}</strong> por pack — <strong>${clp(sig.ah_promo * sig.cant)}</strong> en el pedido.`;
   }
   if (!esMejor && sig) {
-    const d = sig.cant - cant;
-    if (d <= 0) return null;
+    const d = sig.cant - cant; if (d <= 0) return null;
     const extra = (tramo.p_carrito || 0) - (sig.p_carrito || 0);
     return `Agrega <strong>${d} pack${d>1?'s':''} más</strong> para pasar al tramo <strong>${pp(sig.desc_pct)}</strong> y ahorrar <strong>${clp(extra)}</strong> adicional por pack — <strong>${clp(extra * sig.cant)}</strong> total.`;
   }
@@ -196,11 +296,10 @@ function argumento(prod, cant, tramo) {
 }
 
 function renderResultado(prod, cant, el) {
-  const tramo = tramoParaCant(prod, cant);
-  const arg   = argumento(prod, cant, tramo);
+  const tramo    = tramoParaCant(prod, cant);
+  const arg      = argumento(prod, cant, tramo);
   const mejorPct = (mejorTramo(prod).desc_pct || 0);
 
-  // Tabla de tramos (todos los tramos del producto)
   let tramosHtml = '';
   const tramosConDesc = prod.tramos.filter(t => t.desc_pct > 0);
   if (tramosConDesc.length) {
@@ -216,40 +315,54 @@ function renderResultado(prod, cant, el) {
     }).join('');
     const t1 = prod.tramos.find(t => !t.desc_pct || t.desc_pct === 0);
     tramosHtml = `<div class="tramos-wrap">
-      <div class="tramos-t">Escalas &middot; ${prod.programa}</div>
-      <table class="ttable"><thead><tr>
-        <th>Tramo</th><th>Descuento</th><th>$/pack</th><th>$/botella</th><th>Neto s/imp</th>
-      </tr></thead><tbody>${filas}
-        ${t1?`<tr><td>Sin descuento (1 pack)</td><td><span class="pill">0%</span></td>
-          <td>${clp(t1.p_carrito)}</td><td>${clp(t1.p_botella)}</td><td>${clp(t1.neto)}</td></tr>`:''}
-      </tbody></table></div>`;
+      <div class="tramos-t">Escalas · ${prod.programa}</div>
+      <div class="table-scroll">
+        <table class="ttable"><thead><tr>
+          <th>Tramo</th><th>Descuento</th><th>$/pack</th><th>$/botella</th><th>Neto s/imp</th>
+        </tr></thead><tbody>${filas}
+          ${t1?`<tr><td>Sin descuento</td><td><span class="pill">0%</span></td>
+            <td>${clp(t1.p_carrito)}</td><td>${clp(t1.p_botella)}</td><td>${clp(t1.neto)}</td></tr>`:''}
+        </tbody></table>
+      </div></div>`;
   }
 
   el.innerHTML = `
     <div class="mg">
-      <div class="met ${(tramo.desc_pct||0)>0?'ok':''}">
+      <div class="met ${(tramo.desc_pct||0)>0?'ok':''} full">
         <div class="ml">Precio en carrito</div>
         <div class="mv">${clp(tramo.p_carrito)}</div>
-        <div class="ms">${cant} pack${cant>1?'s':''} &middot; ${pp(tramo.desc_pct)} RC</div>
+        <div class="ms">${cant} pack${cant>1?'s':''} · ${pp(tramo.desc_pct)} RC</div>
       </div>
-      <div class="met"><div class="ml">Precio por botella</div>
+      <div class="met">
+        <div class="ml">$/botella</div>
         <div class="mv">${clp(tramo.p_botella)}</div>
-        <div class="ms">${prod.uds_pack} und &middot; ${prod.ml_unidad}ml</div></div>
-      <div class="met"><div class="ml">Precio por litro</div>
+        <div class="ms">${prod.uds_pack} und · ${prod.ml_unidad}ml</div>
+      </div>
+      <div class="met">
+        <div class="ml">$/litro</div>
         <div class="mv">${clp(tramo.p_litro)}</div>
-        <div class="ms">${Math.round(prod.uds_pack * cant * prod.ml_unidad / 100) / 10} litros</div></div>
-      <div class="met az"><div class="ml">Neto sin impuestos</div>
+        <div class="ms">${Math.round(prod.uds_pack * cant * prod.ml_unidad / 100) / 10} litros</div>
+      </div>
+      <div class="met az">
+        <div class="ml">Neto s/imp</div>
         <div class="mv">${clp(tramo.neto)}</div>
-        <div class="ms">Para recupero IVA B2B</div></div>
-      ${(tramo.desc_pct||0)>0?`<div class="met ah"><div class="ml">Ahorro vs promo</div>
-        <div class="mv">${clp(tramo.ah_promo)}</div>
-        <div class="ms">por pack &middot; ${clp((tramo.ah_promo||0)*cant)} total</div></div>`:''}
-      ${tramo.ah_lista?`<div class="met ah"><div class="ml">Ahorro vs lista</div>
-        <div class="mv">${clp(tramo.ah_lista)}</div>
-        <div class="ms">${pp(tramo.ah_lista_p)} descuento total</div></div>`:''}
-      <div class="met"><div class="ml">Total pedido</div>
+        <div class="ms">Recupero IVA B2B</div>
+      </div>
+      <div class="met">
+        <div class="ml">Total pedido</div>
         <div class="mv">${clp((tramo.p_carrito||0)*cant)}</div>
-        <div class="ms">${prod.uds_pack * cant} unidades</div></div>
+        <div class="ms">${prod.uds_pack * cant} unidades</div>
+      </div>
+      ${(tramo.desc_pct||0)>0?`<div class="met ah">
+        <div class="ml">Ahorro vs promo</div>
+        <div class="mv">${clp(tramo.ah_promo)}</div>
+        <div class="ms">por pack · ${clp((tramo.ah_promo||0)*cant)} total</div>
+      </div>`:''}
+      ${tramo.ah_lista?`<div class="met ah">
+        <div class="ml">Ahorro vs lista</div>
+        <div class="mv">${clp(tramo.ah_lista)}</div>
+        <div class="ms">${pp(tramo.ah_lista_p)} descuento total</div>
+      </div>`:''}
     </div>
     <div class="trib"><div class="trib-t">Desglose tributario</div>
       <div class="tr"><span>Neto</span><span>${clp(tramo.neto)}</span></div>
@@ -263,9 +376,8 @@ function renderResultado(prod, cant, el) {
 
 function renderCard(prod) {
   const cantidades = [...new Set(prod.tramos.map(t => t.cant))].sort((a,b)=>a-b);
-  const cantDef = cantidades[0] || 1;
+  const cantDef   = cantidades[0] || 1;
   const mejorCant = prod.tramos.reduce((a,b) => ((b.p_litro||9999) < (a.p_litro||9999) ? b : a), prod.tramos[0])?.cant || cantDef;
-
   const div = document.createElement('div');
   div.className = 'pcard';
   div.dataset.nombre = prod.nombre.toLowerCase();
@@ -273,44 +385,41 @@ function renderCard(prod) {
   div.dataset.prog   = (prod.programa||'').toLowerCase();
   div.dataset.fmt    = prod.formato;
   div.dataset.var    = (prod.varietal||'').toLowerCase();
-
   const tagRC = prod.tiene_rc
-    ? `<span class="tag tag-rc">Lleva más, ahorra más</span><span class="tag tag-prog">${prod.programa}</span>`
+    ? `<span class="tag tag-rc">RC</span><span class="tag tag-prog">${prod.programa}</span>`
     : `<span class="tag tag-fijo">Precio fijo</span>`;
-
   const t0 = prod.tramos.find(t => !t.desc_pct || t.desc_pct===0) || prod.tramos[0];
   div.innerHTML = `
     <div class="pcard-hdr" onclick="toggleCard(this.closest('.pcard'))">
       <div class="pnombre">
         <h3>${prod.nombre}</h3>
         <div class="tags">${tagRC}
-          <span class="tag tag-var">${prod.varietal}</span>
-          <span class="tag tag-fmt">${prod.formato} &middot; ${prod.uds_pack} und/pack</span>
+          <span class="tag tag-var" style="background:${varColor(prod.varietal).b};color:${varColor(prod.varietal).t}">
+            <span style="font-size:8px;margin-right:3px">&#9679;</span>${prod.varietal}
+          </span>
+          <span class="tag tag-fmt">${prod.formato}</span>
         </div>
       </div>
       <div class="pprecios">
         ${prod.p_lista?`<div class="p-lista">${clp(prod.p_lista)}</div>`:''}
         <div class="p-promo">${clp(prod.p_promo)}</div>
-        <div class="p-unit">${clp(t0?.p_botella)} / unidad</div>
+        <div class="p-unit">${clp(t0?.p_botella)}/und</div>
       </div>
-      <span class="chev">&#9660;</span>
+      <span class="chev">▾</span>
     </div>
     <div class="pcard-body">
       ${prod.tiene_rc && cantidades.length > 1 ? `<div class="cant-wrap">
         <span class="cant-lbl">Packs:</span>
         <div class="chips" id="chips-${prod.nombre.replace(/[^a-zA-Z0-9]/g,'_')}">
           ${cantidades.map(c=>`<span class="chip${c===cantDef?' sel':''}${c===mejorCant?' best':''}"
-            onclick="selChip(this,${c})"
-            title="${c===mejorCant?'Mejor $/litro':''}">
+            onclick="selChip(this,${c})" title="${c===mejorCant?'Mejor $/litro':''}">
             ${c}${c===mejorCant?' ★':''}</span>`).join('')}
           <input class="cant-inp" type="number" min="1" max="999" placeholder="otro"
             onchange="selManual(this,+this.value)">
         </div></div>` : ''}
       <div class="metricas" id="res-${prod.nombre.replace(/[^a-zA-Z0-9]/g,'_')}"></div>
     </div>`;
-
-  div._prod = prod;
-  div._cant = cantDef;
+  div._prod = prod; div._cant = cantDef;
   return div;
 }
 
@@ -340,24 +449,33 @@ function selManual(el, cant) {
 
 function setF(tipo, val, btn) {
   FILTROS[tipo] = val;
-  btn.closest('.filtros').querySelectorAll('.fb').forEach(b=>b.classList.remove('act','act-v','act-f'));
+  btn.closest('.filtros').querySelectorAll('.fb').forEach(b=>{
+    b.classList.remove('act','act-v','act-f');
+    // Restaurar color original de botones varietal
+    if (b.classList.contains('fb-var') && b.dataset.varColor) {
+      const c = JSON.parse(b.dataset.varColor);
+      b.style.setProperty('--vt', c.t);
+      b.style.setProperty('--vb', c.b);
+    }
+  });
   btn.classList.add(tipo==='prog'?'act':tipo==='fmt'?'act-f':'act-v');
   aplicarFiltros();
+  actualizarBadgeFiltros();
 }
 function aplicarFiltros() {
   const q = (document.getElementById('SI').value||'').toLowerCase();
   let vis = 0;
   document.querySelectorAll('.pcard').forEach(card => {
-    const mQ = card.dataset.nombre.includes(q) || card.dataset.var.includes(q);
-    const rc = card.dataset.rc === 'si';
+    const mQ  = card.dataset.nombre.includes(q) || card.dataset.var.includes(q);
+    const rc  = card.dataset.rc === 'si';
     const prog = card.dataset.prog;
     let mP = false;
     const fp = FILTROS.prog;
     if (fp==='todos') mP=true;
-    else if (fp==='rc') mP=rc;
-    else if (fp==='sinrc') mP=!rc;
-    else if (fp==='botell') mP=prog.includes('botell')||prog.includes('corriente');
-    else if (fp==='finos') mP=prog.includes('fino');
+    else if (fp==='rc')      mP=rc;
+    else if (fp==='sinrc')   mP=!rc;
+    else if (fp==='botell')  mP=prog.includes('botell')||prog.includes('corriente');
+    else if (fp==='finos')   mP=prog.includes('fino');
     else if (fp==='premium') mP=prog.includes('premium')||prog.includes('super');
     const mF = FILTROS.fmt==='todos' || card.dataset.fmt===FILTROS.fmt;
     const mV = FILTROS.var==='todos' || card.dataset.var===FILTROS.var.toLowerCase();
@@ -365,27 +483,25 @@ function aplicarFiltros() {
     card.style.display = show ? '' : 'none';
     if (show) vis++;
   });
-  document.getElementById('HM').innerHTML = `${vis} producto${vis!==1?'s':''} mostrados<br><span id="META_DATE"></span>`;
+  document.getElementById('HM').textContent = `${vis} productos`;
 }
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('SI').addEventListener('input', aplicarFiltros);
 });
 
-// ── Cargar data.json ──────────────────────────────────────────
 async function init() {
   try {
-    // Ruta relativa al index.html — funciona en GitHub Pages /repo/ y dominio propio
     const dataUrl = new URL('./data.json', location.href).href;
     const res  = await fetch(dataUrl);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
+    const data  = await res.json();
     const prods = data.productos;
     const meta  = data.meta;
 
     document.getElementById('LOADING').style.display = 'none';
     document.getElementById('APP').style.display = 'block';
 
-    const lista = document.getElementById('LISTA');
+    const lista  = document.getElementById('LISTA');
     const fmtSet = new Map(), varSet = new Map();
     let nR=0, nS=0, nB=0, nFi=0, nP=0, sum=0;
 
@@ -410,7 +526,6 @@ async function init() {
     document.getElementById('cFi').textContent = nFi;
     document.getElementById('cP').textContent  = nP;
 
-    // Filtros dinámicos formato
     const ff = document.getElementById('F_FMT');
     ['x1','x4','x6','x8','x12','x24'].forEach(f => {
       if (!fmtSet.has(f)) return;
@@ -421,39 +536,37 @@ async function init() {
       ff.appendChild(b);
     });
 
-    // Filtros dinámicos varietal
     const fv = document.getElementById('F_VAR');
     [...varSet.entries()].sort((a,b)=>b[1]-a[1]).forEach(([v,n]) => {
+      const c = varColor(v);
       const b = document.createElement('button');
-      b.className = 'fb';
+      b.className = 'fb fb-var';
+      b.dataset.varColor = JSON.stringify(c);
+      b.style.setProperty('--vt', c.t);
+      b.style.setProperty('--vb', c.b);
       b.onclick = function() { setF('var', v, this); };
-      b.innerHTML = `${v} <span class="cnt">${n}</span>`;
+      b.innerHTML = `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${c.t};margin-right:4px;vertical-align:middle;flex-shrink:0"></span>${v} <span class="cnt">${n}</span>`;
       fv.appendChild(b);
     });
 
-    // Resumen
     document.getElementById('RES').innerHTML = `
       <div class="rc"><div class="rv">${tot}</div><div class="rl">Productos</div></div>
-      <div class="rc"><div class="rv">${nR}</div><div class="rl">Con programa RC</div></div>
+      <div class="rc"><div class="rv">${nR}</div><div class="rl">Con RC</div></div>
       <div class="rc"><div class="rv">${nS}</div><div class="rl">Precio fijo</div></div>
-      <div class="rc"><div class="rv">$${Math.round(sum/tot).toLocaleString('es-CL')}</div><div class="rl">Precio promo prom.</div></div>`;
+      <div class="rc"><div class="rv">$${Math.round(sum/tot).toLocaleString('es-CL')}</div><div class="rl">Promo prom.</div></div>`;
 
-    // Header y footer con fecha
     const fecha = meta.generado ? meta.generado.replace('T',' ').substring(0,16) : '';
     document.getElementById('HM').innerHTML = `${tot} productos<br>Datos: ${fecha}`;
     document.getElementById('FOOTER').innerHTML =
-      `IVA 19% + ILA 20.5% (factor 1.395) &middot; Descuentos RC sobre precio promocional vigente<br>Actualizado: ${fecha}`;
+      `IVA 19% + ILA 20.5% (factor 1.395) · Descuentos RC sobre precio promocional vigente<br>Actualizado: ${fecha}`;
 
   } catch (err) {
     document.getElementById('LOADING').innerHTML =
-      `<div class="error"><strong>No se pudo cargar el cat&aacute;logo.</strong><br><br>
-      Aseg&uacute;rate de que el archivo <code>data.json</code> est&aacute; en la misma carpeta.<br>
-      Si est&aacute;s abriendo el archivo localmente (file://), usa un servidor local:<br>
-      <code>python -m http.server 8000</code><br><br>
+      `<div class="error"><strong>No se pudo cargar el catálogo.</strong><br><br>
+      Asegúrate de que el archivo <code>data.json</code> está en la misma carpeta.<br>
       Error: ${err.message}</div>`;
   }
 }
-
 init();
 </script>
 </body>
