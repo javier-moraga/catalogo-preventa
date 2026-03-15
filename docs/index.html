@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Analizador de Precios · Vinos miAndina</title>
+<title>Catálogo Vinos · miAndina</title>
 <style>
 :root{
   --rojo:#C1272D;--rojo-c:#F9E5E6;
@@ -18,141 +18,154 @@
 html,body{font-family:var(--font);background:var(--bg);color:var(--texto);font-size:14px}
 
 /* HEADER */
-.header{background:var(--rojo);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
-.logo{width:32px;height:32px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.header{background:var(--rojo);color:#fff;padding:10px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100}
+.logo{width:30px;height:30px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .logo span{color:var(--rojo);font-weight:700;font-size:11px}
-.hinfo h1{font-size:14px;font-weight:600;line-height:1.2}
-.hinfo p{font-size:10px;opacity:.8;margin-top:1px}
-.hmeta{margin-left:auto;text-align:right;font-size:10px;opacity:.85;line-height:1.5;white-space:nowrap}
+.hinfo{flex:1;min-width:0}
+.hinfo h1{font-size:13px;font-weight:600;line-height:1.2}
+.hinfo p{font-size:10px;opacity:.8}
+.hmeta{text-align:right;font-size:10px;opacity:.85;line-height:1.5;white-space:nowrap;flex-shrink:0}
 
-/* LOADING */
+/* LOADING / ERROR */
 .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px;color:var(--muted)}
-.spinner{width:36px;height:36px;border:3px solid var(--borde);border-top-color:var(--rojo);border-radius:50%;animation:spin .8s linear infinite}
+.spinner{width:34px;height:34px;border:3px solid var(--borde);border-top-color:var(--rojo);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .error{background:#FFEBEE;border:1px solid #FFCDD2;border-radius:var(--r);padding:20px;margin:16px;color:#B71C1C;font-size:13px;line-height:1.6}
 
-/* CONTROLES — barra fija con filtros colapsables */
-.controles{background:var(--blanco);border-bottom:1px solid var(--borde);position:sticky;top:56px;z-index:90}
-
-/* Fila de búsqueda + botón filtros */
-.search-bar{display:flex;gap:8px;align-items:center;padding:10px 12px}
-.sinput{flex:1;padding:9px 14px;border:1px solid var(--borde);border-radius:20px;font-size:13px;background:var(--blanco);min-width:0}
+/* BARRA DE BÚSQUEDA FIJA */
+.topbar{background:var(--blanco);border-bottom:1px solid var(--borde);position:sticky;top:52px;z-index:90;padding:8px 12px;display:flex;gap:8px;align-items:center}
+.sinput{flex:1;padding:9px 14px;border:1px solid var(--borde);border-radius:20px;font-size:14px;background:var(--blanco);min-width:0}
 .sinput:focus{outline:none;border-color:var(--rojo)}
+.btn-f{display:flex;align-items:center;gap:4px;padding:8px 12px;border:1px solid var(--borde);border-radius:20px;background:var(--blanco);cursor:pointer;font-size:12px;color:var(--muted);white-space:nowrap;flex-shrink:0}
+.btn-f.activo{border-color:var(--rojo);color:var(--rojo);background:var(--rojo-c)}
+.btn-f svg{transition:transform .2s}
+.btn-f.open svg:last-child{transform:rotate(180deg)}
 
-/* Botón toggle filtros */
-.btn-filtros{display:flex;align-items:center;gap:5px;padding:8px 12px;border:1px solid var(--borde);border-radius:20px;background:var(--blanco);cursor:pointer;font-size:12px;color:var(--muted);white-space:nowrap;flex-shrink:0;transition:.15s}
-.btn-filtros.tiene-activos{border-color:var(--rojo);color:var(--rojo);background:var(--rojo-c)}
-.btn-filtros svg{transition:transform .2s}
-.btn-filtros.abierto svg{transform:rotate(180deg)}
-
-/* Panel colapsable */
-.filtros-panel{display:none;padding:0 12px 10px;border-top:1px solid var(--borde)}
-.filtros-panel.visible{display:block}
-.fila{margin-top:10px}
-.flbl{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
-.filtros{display:flex;gap:5px;flex-wrap:wrap}
-.fb{padding:5px 11px;border:1px solid var(--borde);border-radius:14px;background:var(--blanco);cursor:pointer;font-size:12px;color:var(--muted);white-space:nowrap;transition:.15s;-webkit-tap-highlight-color:transparent}
-.fb:active{opacity:.7}
-.fb.act{background:var(--rojo);color:#fff;border-color:var(--rojo)}
-.fb.act-v{background:#7B3F00;color:#fff;border-color:#7B3F00}
-.fb.fb-var.act-v{background:var(--vt);color:#fff;border-color:var(--vt)}
-.fb.fb-var:not(.act-v):hover{border-color:var(--vt);color:var(--vt)}
+/* PANEL FILTROS — scroll horizontal por fila */
+.panel-f{display:none;background:var(--blanco);border-bottom:1px solid var(--borde);padding:0 12px 10px}
+.panel-f.vis{display:block}
+.fila{margin-top:8px}
+.flbl{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+/* Scroll horizontal sin wrap */
+.fscroll{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+.fscroll::-webkit-scrollbar{display:none}
+.fb{padding:5px 11px;border:1px solid var(--borde);border-radius:14px;background:var(--blanco);cursor:pointer;font-size:12px;color:var(--muted);white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.fb.act {background:var(--rojo);color:#fff;border-color:var(--rojo)}
 .fb.act-f{background:var(--azul);color:#fff;border-color:var(--azul)}
-.cnt{font-size:10px;background:rgba(0,0,0,.1);border-radius:8px;padding:1px 5px;margin-left:2px}
-.fb.act .cnt,.fb.act-v .cnt,.fb.act-f .cnt{background:rgba(255,255,255,.25)}
+.fb.act-v{background:var(--vt,#333);color:#fff;border-color:var(--vt,#333)}
+.cnt{font-size:10px;opacity:.7;margin-left:2px}
 
-/* Resumen compacto — 2 filas en móvil */
-.resumen{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px 12px;background:var(--blanco);border-bottom:1px solid var(--borde)}
-.rc{background:var(--gris);border-radius:var(--rs);padding:7px 10px;text-align:center}
-.rc .rv{font-size:16px;font-weight:700;color:var(--rojo)}
-.rc .rl{font-size:10px;color:var(--muted);margin-top:1px}
+/* RESUMEN 2×2 */
+.resumen{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:8px 12px;background:var(--blanco);border-bottom:1px solid var(--borde)}
+.rc{background:var(--gris);border-radius:var(--rs);padding:6px 10px;text-align:center}
+.rc .rv{font-size:15px;font-weight:700;color:var(--rojo)}
+.rc .rl{font-size:9px;color:var(--muted);margin-top:1px}
 
 /* LISTA */
-.lista{padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.lista{padding:8px 12px;display:flex;flex-direction:column;gap:7px}
 
 /* CARD */
 .pcard{background:var(--blanco);border:1px solid var(--borde);border-radius:var(--r);overflow:hidden}
-.pcard-hdr{padding:12px 14px;display:flex;gap:10px;align-items:flex-start;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.pcard-hdr{padding:11px 13px;display:flex;gap:10px;align-items:flex-start;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .pcard-hdr:active{background:var(--gris)}
 .pnombre{flex:1;min-width:0}
-.pnombre h3{font-size:13px;font-weight:500;line-height:1.35;margin-bottom:4px}
-.tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px}
-.tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:8px;white-space:nowrap}
-.tag-rc{background:#FFF3E0;color:#E65100}
-.tag-prog{background:var(--azul-c);color:var(--azul);font-size:9px}
+.pnombre h3{font-size:13px;font-weight:500;line-height:1.3;margin-bottom:3px}
+.tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px}
+.tag{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;padding:2px 7px;border-radius:8px;white-space:nowrap}
+.tag-rc  {background:#FFF3E0;color:#E65100}
 .tag-fijo{background:var(--gris2);color:var(--muted)}
-.tag-var{font-size:10px}
-.tag-fmt{background:#E8F5E9;color:#1B5E20}
 .pprecios{text-align:right;flex-shrink:0}
 .p-promo{font-size:18px;font-weight:700;color:var(--rojo);line-height:1}
-.p-lista{font-size:11px;color:var(--muted);text-decoration:line-through;margin-bottom:1px}
-.p-unit{font-size:11px;color:var(--muted)}
-.chev{font-size:16px;color:var(--muted);flex-shrink:0;margin-top:2px;transition:transform .2s}
+.p-lista{font-size:10px;color:var(--muted);text-decoration:line-through}
+.p-unit {font-size:10px;color:var(--muted)}
+.chev{font-size:15px;color:var(--muted);flex-shrink:0;margin-top:3px;transition:transform .2s}
 .pcard.open .chev{transform:rotate(180deg)}
 .pcard-body{display:none;border-top:1px solid var(--borde)}
 .pcard.open .pcard-body{display:block}
 
-/* Selector packs */
-.cant-wrap{padding:10px 14px;background:var(--gris);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.cant-lbl{font-size:11px;color:var(--muted);font-weight:500;white-space:nowrap}
-.chips{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
-.chip{padding:6px 12px;border:1px solid var(--borde);border-radius:14px;cursor:pointer;font-size:12px;background:var(--blanco);white-space:nowrap;-webkit-tap-highlight-color:transparent;min-height:34px;display:flex;align-items:center}
-.chip:active{opacity:.7}
-.chip.sel{background:var(--rojo);color:#fff;border-color:var(--rojo)}
+/* SELECTOR PACKS — scroll horizontal */
+.cant-wrap{padding:9px 13px;background:var(--gris);display:flex;align-items:center;gap:8px}
+.cant-lbl{font-size:11px;color:var(--muted);font-weight:500;white-space:nowrap;flex-shrink:0}
+.chips{display:flex;gap:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:1px}
+.chips::-webkit-scrollbar{display:none}
+.chip{padding:6px 13px;border:1px solid var(--borde);border-radius:14px;cursor:pointer;font-size:12px;background:var(--blanco);white-space:nowrap;flex-shrink:0;min-height:32px;display:flex;align-items:center;-webkit-tap-highlight-color:transparent}
+.chip.sel {background:var(--rojo);color:#fff;border-color:var(--rojo)}
 .chip.best{border-color:var(--verde);color:var(--verde-d);background:var(--verde-c)}
-.chip.best.sel{background:var(--verde);color:#fff}
-.cant-inp{width:68px;padding:6px 8px;border:1px solid var(--borde);border-radius:14px;font-size:12px;text-align:center;min-height:34px}
+.chip.best.sel{background:var(--verde);color:#fff;border-color:var(--verde)}
+.cant-inp{width:60px;padding:5px 8px;border:1px solid var(--borde);border-radius:14px;font-size:12px;text-align:center;min-height:32px;flex-shrink:0}
 .cant-inp:focus{outline:none;border-color:var(--rojo)}
 
-/* Métricas */
-.metricas{padding:10px 14px}
-.mg{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
-.met{background:var(--gris);border-radius:var(--rs);padding:9px 10px}
-.met .ml{font-size:10px;color:var(--muted);margin-bottom:2px}
-.met .mv{font-size:16px;font-weight:700;line-height:1.1}
-.met .ms{font-size:10px;color:var(--muted);margin-top:2px}
-.met.ok{background:var(--verde-c)}.met.ok .mv{color:var(--verde-d)}
+/* MÉTRICAS — layout encajado */
+.metricas{padding:10px 13px}
+
+/* Precio principal — fila completa destacada */
+.precio-principal{display:flex;align-items:center;justify-content:space-between;background:var(--verde-c);border-radius:var(--rs);padding:10px 13px;margin-bottom:8px}
+.precio-principal.sin-rc{background:var(--gris)}
+.pp-left .pp-label{font-size:10px;color:var(--verde-d);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.pp-left .pp-valor{font-size:24px;font-weight:700;color:var(--verde-d);line-height:1}
+.pp-left .pp-sub{font-size:10px;color:var(--verde-d);opacity:.8;margin-top:2px}
+.precio-principal.sin-rc .pp-left .pp-label{color:var(--muted)}
+.precio-principal.sin-rc .pp-left .pp-valor{color:var(--texto)}
+.precio-principal.sin-rc .pp-left .pp-sub{color:var(--muted)}
+.pp-right{text-align:right}
+.pp-right .pp-badge{display:inline-block;background:#fff;color:var(--verde-d);font-size:13px;font-weight:700;padding:4px 10px;border-radius:10px;line-height:1}
+.precio-principal.sin-rc .pp-right .pp-badge{background:var(--gris2);color:var(--muted);font-size:11px}
+
+/* Grid métricas secundarias — 3 col fijo, encajado sin scroll */
+.mg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:8px}
+.met{background:var(--gris);border-radius:var(--rs);padding:8px 9px}
+.met .ml{font-size:9px;color:var(--muted);margin-bottom:2px;text-transform:uppercase;letter-spacing:.04em}
+.met .mv{font-size:14px;font-weight:700;line-height:1.1;color:var(--texto)}
+.met .ms{font-size:9px;color:var(--muted);margin-top:1px}
 .met.ah{background:#FFF3E0}.met.ah .mv{color:#BF360C}
 .met.az{background:var(--azul-c)}.met.az .mv{color:var(--azul)}
-.met.full{grid-column:1/-1}
 
-/* Tributario */
-.trib{background:var(--azul-c);border-radius:var(--rs);padding:10px 12px;margin-bottom:8px;font-size:12px}
-.trib-t{font-size:10px;font-weight:600;color:var(--azul);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
-.tr{display:flex;justify-content:space-between;padding:3px 0;color:#1a3a5c}
+/* Fila ahorro — solo si hay descuento */
+.ahorro-row{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:8px}
+
+/* Tributario colapsable */
+.trib-toggle{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--azul-c);border-radius:var(--rs);cursor:pointer;font-size:11px;color:var(--azul);font-weight:600;margin-bottom:8px;-webkit-tap-highlight-color:transparent}
+.trib-toggle svg{transition:transform .2s;flex-shrink:0}
+.trib-toggle.open svg{transform:rotate(180deg)}
+.trib-body{display:none;background:var(--azul-c);border-radius:0 0 var(--rs) var(--rs);margin-top:-8px;padding:2px 10px 8px;margin-bottom:8px}
+.trib-body.vis{display:block}
+.tr{display:flex;justify-content:space-between;padding:3px 0;color:#1a3a5c;font-size:12px}
 .tr.tot{font-weight:700;border-top:1px solid #bed3e8;padding-top:5px;margin-top:2px}
 
 /* Argumento */
-.arg{background:var(--amber-c);border-left:3px solid var(--amber);border-radius:0 var(--rs) var(--rs) 0;padding:10px 12px;margin-bottom:8px;font-size:12px;line-height:1.6;color:#4A3500}
+.arg{background:var(--amber-c);border-left:3px solid var(--amber);border-radius:0 var(--rs) var(--rs) 0;padding:9px 11px;margin-bottom:8px;font-size:12px;line-height:1.55;color:#4A3500}
 
-/* TABLA — scroll horizontal en móvil */
-.tramos-wrap{margin-top:4px}
-.tramos-t{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
-.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--rs);border:1px solid var(--borde)}
-.table-scroll::-webkit-scrollbar{height:3px}
-.table-scroll::-webkit-scrollbar-thumb{background:var(--borde);border-radius:3px}
-.ttable{width:100%;border-collapse:collapse;font-size:12px;min-width:380px}
-.ttable th{background:var(--azul);color:#fff;padding:8px 10px;text-align:left;font-weight:500;font-size:11px;white-space:nowrap}
-.ttable td{padding:8px 10px;border-bottom:1px solid var(--borde);white-space:nowrap}
-.ttable tr:last-child td{border-bottom:none}
-.ttable tr.act-row td{background:var(--verde-c);color:var(--verde-d);font-weight:500}
-.ttable tr.act-row td:first-child::before{content:"\25B6 "}
-.pill{display:inline-block;padding:2px 8px;border-radius:10px;font-weight:600;background:var(--azul-c);color:var(--azul);font-size:11px}
-.pill.best{background:var(--verde-c);color:var(--verde-d)}
+/* TABLA DE ESCALAS — compacta y encajada */
+.escalas-wrap{margin-bottom:4px}
+.escalas-t{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+/* Tabla encajada: sin scroll, columnas abreviadas */
+.etable{width:100%;border-collapse:collapse;font-size:12px;border-radius:var(--rs);overflow:hidden}
+.etable th{background:var(--azul);color:#fff;padding:7px 8px;text-align:center;font-weight:500;font-size:10px;white-space:nowrap}
+.etable th:first-child{text-align:left}
+.etable td{padding:7px 8px;border-bottom:1px solid var(--borde);text-align:center}
+.etable td:first-child{text-align:left;font-size:11px}
+.etable tr:last-child td{border-bottom:none}
+.etable tr.act td{background:var(--verde-c);color:var(--verde-d);font-weight:600}
+.etable tr.act td:first-child::before{content:"▶ ";font-size:9px}
+.pill{display:inline-block;padding:2px 7px;border-radius:8px;font-weight:700;font-size:11px}
+.pill.ok{background:var(--verde-c);color:var(--verde-d)}
+.pill.med{background:var(--azul-c);color:var(--azul)}
+.pill.no{background:var(--gris2);color:var(--muted)}
 
-/* Footer */
-.footer{text-align:center;padding:20px 16px;color:var(--muted);font-size:11px;border-top:1px solid var(--borde);margin-top:8px;line-height:1.8}
+.footer{text-align:center;padding:16px;color:var(--muted);font-size:10px;border-top:1px solid var(--borde);margin-top:8px;line-height:1.8}
 
-/* Desktop — ampliar grid de métricas en pantallas grandes */
-@media(min-width:600px){
-  .mg{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
-  .met.full{grid-column:auto}
+@media(min-width:480px){
+  .mg3{grid-template-columns:repeat(4,1fr)}
   .resumen{grid-template-columns:repeat(4,1fr)}
-  .controles{top:64px}
-  .header{padding:14px 20px}
+  .topbar{top:54px}
+}
+@media(min-width:700px){
+  .header{padding:12px 20px}
+  .topbar{top:58px}
   .hinfo h1{font-size:16px}
-  .lista{padding:12px 16px}
-  .search-bar{padding:12px 16px}
+  .lista{padding:12px 20px}
+  .topbar,.panel-f{padding-left:20px;padding-right:20px}
+  .resumen{padding:10px 20px}
 }
 </style>
 </head>
@@ -161,243 +174,310 @@ html,body{font-family:var(--font);background:var(--bg);color:var(--texto);font-s
 <div class="header">
   <div class="logo"><span>mi</span></div>
   <div class="hinfo">
-    <h1>Analizador de precios · Vinos</h1>
+    <h1>Catálogo Vinos · miAndina</h1>
     <p>Preventa · Coca-Cola Andina Chile</p>
   </div>
-  <div class="hmeta" id="HM">Cargando...</div>
+  <div class="hmeta" id="HM">…</div>
 </div>
 
 <div class="loading" id="LOADING">
   <div class="spinner"></div>
-  <p>Cargando catálogo...</p>
+  <p>Cargando catálogo…</p>
 </div>
 
 <div id="APP" style="display:none">
-  <div class="controles">
-    <!-- Búsqueda + toggle filtros -->
-    <div class="search-bar">
-      <input class="sinput" id="SI" type="text" placeholder="Buscar producto, varietal...">
-      <button class="btn-filtros" id="BTN_F" onclick="toggleFiltros()">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M2 4h12M4 8h8M6 12h4"/>
-        </svg>
-        Filtros <span id="BADGE_F" style="display:none;background:var(--rojo);color:#fff;border-radius:8px;padding:0 5px;font-size:10px;margin-left:2px">0</span>
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M2 4l4 4 4-4"/>
-        </svg>
-      </button>
-    </div>
+  <div class="topbar">
+    <input class="sinput" id="SI" type="search" placeholder="Buscar vino, cepa, marca…" autocomplete="off">
+    <button class="btn-f" id="BTN_F" onclick="toggleFiltros()">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4h12M4 8h8M6 12h4"/></svg>
+      Filtrar
+      <span id="BADGE_F" style="display:none;background:var(--rojo);color:#fff;border-radius:8px;padding:0 5px;font-size:10px">0</span>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg>
+    </button>
+  </div>
 
-    <!-- Panel colapsable -->
-    <div class="filtros-panel" id="PANEL_F">
-      <div class="fila">
-        <div class="flbl">Programa</div>
-        <div class="filtros">
-          <button class="fb act" onclick="setF('prog','todos',this)">Todos <span class="cnt" id="cT">0</span></button>
-          <button class="fb" onclick="setF('prog','rc',this)">Con RC <span class="cnt" id="cR">0</span></button>
-          <button class="fb" onclick="setF('prog','sinrc',this)">Sin RC <span class="cnt" id="cS">0</span></button>
-          <button class="fb" onclick="setF('prog','botell',this)">Botell+Corrientes <span class="cnt" id="cB">0</span></button>
-          <button class="fb" onclick="setF('prog','finos',this)">Finos <span class="cnt" id="cFi">0</span></button>
-          <button class="fb" onclick="setF('prog','premium',this)">Premium <span class="cnt" id="cP">0</span></button>
-        </div>
+  <div class="panel-f" id="PANEL_F">
+    <div class="fila">
+      <div class="flbl">Programa</div>
+      <div class="fscroll">
+        <button class="fb act" onclick="setF('prog','todos',this)">Todos <span class="cnt" id="cT"></span></button>
+        <button class="fb" onclick="setF('prog','rc',this)">Con RC <span class="cnt" id="cR"></span></button>
+        <button class="fb" onclick="setF('prog','sinrc',this)">Sin RC <span class="cnt" id="cS"></span></button>
+        <button class="fb" onclick="setF('prog','botell',this)">Botell+Corrientes <span class="cnt" id="cB"></span></button>
+        <button class="fb" onclick="setF('prog','finos',this)">Finos <span class="cnt" id="cFi"></span></button>
+        <button class="fb" onclick="setF('prog','premium',this)">Premium <span class="cnt" id="cP"></span></button>
       </div>
-      <div class="fila">
-        <div class="flbl">Formato (unidades por pack)</div>
-        <div class="filtros" id="F_FMT"><button class="fb act" onclick="setF('fmt','todos',this)">Todos</button></div>
-      </div>
-      <div class="fila">
-        <div class="flbl">Varietal / Cepa</div>
-        <div class="filtros" id="F_VAR"><button class="fb act" onclick="setF('var','todos',this)">Todos</button></div>
-      </div>
+    </div>
+    <div class="fila">
+      <div class="flbl">Formato</div>
+      <div class="fscroll" id="F_FMT"><button class="fb act" onclick="setF('fmt','todos',this)">Todos</button></div>
+    </div>
+    <div class="fila">
+      <div class="flbl">Varietal / Cepa</div>
+      <div class="fscroll" id="F_VAR"><button class="fb act" onclick="setF('var','todos',this)">Todos</button></div>
     </div>
   </div>
 
   <div class="resumen" id="RES"></div>
   <div class="lista" id="LISTA"></div>
-  <div class="footer" id="FOOTER">IVA 19% + ILA 20.5% (factor 1.395) · Descuentos RC sobre precio promocional vigente</div>
+  <div class="footer" id="FOOTER">IVA 19% + ILA 20.5% · Descuentos RC sobre precio promocional vigente</div>
 </div>
 
 <script>
-
-// ── Mapa de colores por varietal ─────────────────────────────
-const VAR_COLORS = {
-  'Cabernet Sauvignon': {t:'#6B1A2A', b:'#F5E6E9'},
-  'Carmenere':          {t:'#7B2D8B', b:'#F5EAF8'},
-  'Malbec':             {t:'#4A1060', b:'#EDE5F5'},
-  'Merlot':             {t:'#A0272A', b:'#FAEAEA'},
-  'Syrah':              {t:'#3D1F5E', b:'#EAE5F5'},
-  'Pinot Noir':         {t:'#C0392B', b:'#FDECEA'},
-  'Blend':              {t:'#5D4037', b:'#EFEBE9'},
-  'Sauvignon Blanc':    {t:'#1B6B3A', b:'#E6F4EC'},
-  'Chardonnay':         {t:'#B7860B', b:'#FEF9E7'},
-  'Moscatel':           {t:'#D4AC0D', b:'#FEF9E7'},
-  'Blanco':             {t:'#5D8A2F', b:'#EDF5E5'},
-  'Rose':               {t:'#C2185B', b:'#FCE4EC'},
-  'Coctel':             {t:'#00838F', b:'#E0F7FA'},
-  'Uva de Mesa':        {t:'#558B2F', b:'#F1F8E9'},
-  'Late Harvest':       {t:'#E65100', b:'#FBE9E7'},
-  'Otro':               {t:'#607D8B', b:'#ECEFF1'},
-};
-
-function varColor(varietal) {
-  return VAR_COLORS[varietal] || VAR_COLORS['Otro'];
-}
-
 const clp = n => n != null ? '$' + Math.round(n).toLocaleString('es-CL') : '—';
 const pp  = n => n != null ? (+n).toFixed(1) + '%' : '—';
 let PRODS = [], FILTROS = {prog:'todos', fmt:'todos', var:'todos'};
 
-// ── Toggle panel filtros ───────────────────────────────────────
+const VAR_COLORS = {
+  'Cabernet Sauvignon':{t:'#6B1A2A',b:'#F5E6E9'},
+  'Carmenere':         {t:'#7B2D8B',b:'#F5EAF8'},
+  'Malbec':            {t:'#4A1060',b:'#EDE5F5'},
+  'Merlot':            {t:'#A0272A',b:'#FAEAEA'},
+  'Syrah':             {t:'#3D1F5E',b:'#EAE5F5'},
+  'Pinot Noir':        {t:'#C0392B',b:'#FDECEA'},
+  'Blend':             {t:'#5D4037',b:'#EFEBE9'},
+  'Sauvignon Blanc':   {t:'#1B6B3A',b:'#E6F4EC'},
+  'Chardonnay':        {t:'#B7860B',b:'#FEF9E7'},
+  'Moscatel':          {t:'#D4AC0D',b:'#FEF9E7'},
+  'Blanco':            {t:'#5D8A2F',b:'#EDF5E5'},
+  'Rose':              {t:'#C2185B',b:'#FCE4EC'},
+  'Coctel':            {t:'#00838F',b:'#E0F7FA'},
+  'Uva de Mesa':       {t:'#558B2F',b:'#F1F8E9'},
+  'Late Harvest':      {t:'#E65100',b:'#FBE9E7'},
+  'Otro':              {t:'#607D8B',b:'#ECEFF1'},
+};
+const vc = v => VAR_COLORS[v] || VAR_COLORS['Otro'];
+
+// ── Filtros ───────────────────────────────────────────────────
 function toggleFiltros() {
-  const panel = document.getElementById('PANEL_F');
-  const btn   = document.getElementById('BTN_F');
-  const abierto = panel.classList.toggle('visible');
-  btn.classList.toggle('abierto', abierto);
+  const p = document.getElementById('PANEL_F');
+  const b = document.getElementById('BTN_F');
+  p.classList.toggle('vis');
+  b.classList.toggle('open');
+}
+function actualizarBadge() {
+  const n = [FILTROS.prog,FILTROS.fmt,FILTROS.var].filter(v=>v!=='todos').length;
+  const el = document.getElementById('BADGE_F');
+  const btn = document.getElementById('BTN_F');
+  el.style.display = n ? 'inline' : 'none';
+  el.textContent   = n;
+  btn.classList.toggle('activo', n > 0);
+}
+function setF(tipo, val, btn) {
+  FILTROS[tipo] = val;
+  btn.closest('.fscroll').querySelectorAll('.fb').forEach(b => {
+    b.classList.remove('act','act-f','act-v');
+    if (b._vc) b.style.setProperty('--vt', b._vc.t);
+  });
+  btn.classList.add(tipo==='prog'?'act':tipo==='fmt'?'act-f':'act-v');
+  aplicarFiltros();
+  actualizarBadge();
+}
+function aplicarFiltros() {
+  const q = (document.getElementById('SI').value||'').toLowerCase();
+  let vis = 0;
+  document.querySelectorAll('.pcard').forEach(card => {
+    const mQ = card.dataset.n.includes(q)||card.dataset.v.includes(q);
+    const rc = card.dataset.r==='1';
+    const pg = card.dataset.p;
+    let mP = FILTROS.prog==='todos'
+      || (FILTROS.prog==='rc'&&rc) || (FILTROS.prog==='sinrc'&&!rc)
+      || (FILTROS.prog==='botell'&&(pg.includes('botell')||pg.includes('corriente')))
+      || (FILTROS.prog==='finos'&&pg.includes('fino'))
+      || (FILTROS.prog==='premium'&&(pg.includes('premium')||pg.includes('super')));
+    const mF = FILTROS.fmt==='todos'||card.dataset.f===FILTROS.fmt;
+    const mV = FILTROS.var==='todos'||card.dataset.v===FILTROS.var.toLowerCase();
+    const show = mQ&&mP&&mF&&mV;
+    card.style.display = show?'':'none';
+    if(show) vis++;
+  });
+  document.getElementById('HM').textContent = vis+' prod.';
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('SI').addEventListener('input', aplicarFiltros);
+});
+
+// ── Tramos deduplicados (1 por descuento) ─────────────────────
+function tramosUnicos(prod) {
+  const seen = new Set();
+  return prod.tramos
+    .filter(t => { const k = t.desc_pct+''; if(seen.has(k)) return false; seen.add(k); return true; })
+    .sort((a,b) => b.desc_pct - a.desc_pct); // mayor descuento primero
 }
 
-function actualizarBadgeFiltros() {
-  const activos = [FILTROS.prog, FILTROS.fmt, FILTROS.var].filter(v => v !== 'todos').length;
-  const badge = document.getElementById('BADGE_F');
-  const btn   = document.getElementById('BTN_F');
-  badge.style.display = activos > 0 ? 'inline' : 'none';
-  badge.textContent   = activos;
-  btn.classList.toggle('tiene-activos', activos > 0);
-}
-
-// ── Lógica de datos ────────────────────────────────────────────
 function tramoParaCant(prod, cant) {
   const ts = prod.tramos.filter(t => t.cant <= cant);
   if (!ts.length) return prod.tramos[0];
-  return ts.reduce((a, b) => b.cant > a.cant ? b : a);
+  return ts.reduce((a,b) => b.cant > a.cant ? b : a);
 }
+
 function mejorTramo(prod) {
-  return prod.tramos.reduce((a, b) => (b.desc_pct || 0) > (a.desc_pct || 0) ? b : a);
+  return prod.tramos.reduce((a,b) => (b.desc_pct||0)>(a.desc_pct||0)?b:a);
 }
+
+// ── Argumento de venta ────────────────────────────────────────
 function argumento(prod, cant, tramo) {
-  const ts = prod.tramos;
-  if (!ts.length || !prod.tiene_rc) return null;
-  const mejor   = mejorTramo(prod);
-  const esMejor = tramo.desc_pct === mejor.desc_pct && tramo.desc_pct > 0;
-  const sinDesc = !tramo.desc_pct || tramo.desc_pct === 0;
-  const mayor   = ts.filter(t => t.desc_pct > (tramo.desc_pct || 0));
-  const sig     = mayor.length ? mayor.reduce((a, b) => a.desc_pct < b.desc_pct ? a : b) : null;
+  if (!prod.tiene_rc) return null;
+  const unicos = tramosUnicos(prod).filter(t => t.desc_pct > 0);
+  if (!unicos.length) return null;
+  const mejor   = unicos[0];
+  const esMejor = (tramo.desc_pct||0) === mejor.desc_pct && mejor.desc_pct > 0;
+  const sinDesc = !tramo.desc_pct || tramo.desc_pct===0;
+  const mayor   = unicos.filter(t => t.desc_pct > (tramo.desc_pct||0));
+  const sig     = mayor.length ? mayor[mayor.length-1] : null; // próximo tramo
+
   if (sinDesc && sig) {
-    const d = sig.cant - cant; if (d <= 0) return null;
-    return `Con <strong>${d} pack${d>1?'s':''} más</strong> (total ${sig.cant}) activas el <strong>${pp(sig.desc_pct)} de descuento</strong> y ahorras <strong>${clp(sig.ah_promo)}</strong> por pack — <strong>${clp(sig.ah_promo * sig.cant)}</strong> en el pedido.`;
+    const d = sig.cant - cant; if(d<=0) return null;
+    return `Con <strong>${d} pack${d>1?'s':''} más</strong> (${sig.cant} total) activas el <strong>${pp(sig.desc_pct)}</strong> y ahorras <strong>${clp(sig.ah_promo)}</strong>/pack — <strong>${clp(sig.ah_promo*sig.cant)}</strong> en el pedido.`;
   }
   if (!esMejor && sig) {
-    const d = sig.cant - cant; if (d <= 0) return null;
-    const extra = (tramo.p_carrito || 0) - (sig.p_carrito || 0);
-    return `Agrega <strong>${d} pack${d>1?'s':''} más</strong> para pasar al tramo <strong>${pp(sig.desc_pct)}</strong> y ahorrar <strong>${clp(extra)}</strong> adicional por pack — <strong>${clp(extra * sig.cant)}</strong> total.`;
+    const d = sig.cant - cant; if(d<=0) return null;
+    const extra = (tramo.p_carrito||0)-(sig.p_carrito||0);
+    return `<strong>${d} pack${d>1?'s':''} más</strong> te llevan al tramo <strong>${pp(sig.desc_pct)}</strong>: ahorras <strong>${clp(extra)}</strong> adicional/pack.`;
   }
   if (esMejor)
-    return `Estás en el <strong>mejor tramo disponible (${pp(tramo.desc_pct)})</strong>. Ahorro total sobre precio de lista: <strong>${clp(tramo.ah_lista)}</strong> por pack${tramo.ah_lista_p ? ' (' + pp(tramo.ah_lista_p) + ' acumulado)' : ''}.`;
+    return `Mejor tramo disponible <strong>(${pp(tramo.desc_pct)})</strong>. Ahorro acumulado vs lista: <strong>${clp(tramo.ah_lista)}</strong>/pack.`;
   return null;
 }
 
-function renderResultado(prod, cant, el) {
-  const tramo    = tramoParaCant(prod, cant);
-  const arg      = argumento(prod, cant, tramo);
-  const mejorPct = (mejorTramo(prod).desc_pct || 0);
+// ── Render detalle ────────────────────────────────────────────
+function renderDetalle(prod, cant, el) {
+  const tramo   = tramoParaCant(prod, cant);
+  const arg     = argumento(prod, cant, tramo);
+  const unicos  = tramosUnicos(prod);
+  const conDesc = unicos.filter(t => t.desc_pct > 0);
+  const mejor   = (mejorTramo(prod).desc_pct||0);
+  const tieneRC = prod.tiene_rc && (tramo.desc_pct||0) > 0;
 
-  let tramosHtml = '';
-  const tramosConDesc = prod.tramos.filter(t => t.desc_pct > 0);
-  if (tramosConDesc.length) {
-    const filas = [...tramosConDesc].sort((a,b)=>b.desc_pct-a.desc_pct).map(t => {
-      const act = t.cant === tramo.cant && (tramo.desc_pct || 0) > 0;
-      const esM = t.desc_pct === mejorPct;
-      return `<tr class="${act?'act-row':''}">
-        <td>${t.label}</td>
-        <td><span class="pill ${esM?'best':''}">${pp(t.desc_pct)}</span></td>
+  // Abreviar label del tramo para tabla: "De 12 a 23 pack" → "12–23"  "A partir de 36 pack" → "36+"
+  function abreviar(label) {
+    const mr = label.match(/de\s+(\d+)\s+a\s+(\d+)/i);
+    if (mr) return `${mr[1]}–${mr[2]}`;
+    const md = label.match(/a partir de\s+(\d+)/i);
+    if (md) return `${md[1]}+`;
+    return label.replace(/pack/i,'').trim();
+  }
+
+  // Tabla de escalas: 1 fila por tramo único, columnas abreviadas
+  let tablaHtml = '';
+  if (conDesc.length) {
+    const filas = conDesc.map(t => {
+      const act = t.desc_pct === (tramo.desc_pct||0) && tieneRC;
+      const esM = t.desc_pct === mejor;
+      const pillCls = esM ? 'ok' : 'med';
+      return `<tr class="${act?'act':''}">
+        <td>${abreviar(t.label)} pack</td>
+        <td><span class="pill ${pillCls}">${pp(t.desc_pct)}</span></td>
         <td>${clp(t.p_carrito)}</td>
         <td>${clp(t.p_botella)}</td>
-        <td>${clp(t.neto)}</td></tr>`;
+      </tr>`;
     }).join('');
-    const t1 = prod.tramos.find(t => !t.desc_pct || t.desc_pct === 0);
-    tramosHtml = `<div class="tramos-wrap">
-      <div class="tramos-t">Escalas · ${prod.programa}</div>
-      <div class="table-scroll">
-        <table class="ttable"><thead><tr>
-          <th>Tramo</th><th>Descuento</th><th>$/pack</th><th>$/botella</th><th>Neto s/imp</th>
-        </tr></thead><tbody>${filas}
-          ${t1?`<tr><td>Sin descuento</td><td><span class="pill">0%</span></td>
-            <td>${clp(t1.p_carrito)}</td><td>${clp(t1.p_botella)}</td><td>${clp(t1.neto)}</td></tr>`:''}
-        </tbody></table>
-      </div></div>`;
+    const t0 = prod.tramos.find(t => !t.desc_pct||t.desc_pct===0);
+    tablaHtml = `<div class="escalas-wrap">
+      <div class="escalas-t">Escalas · ${prod.programa}</div>
+      <table class="etable"><thead><tr>
+        <th>Tramo</th><th>%</th><th>$/pack</th><th>$/bot.</th>
+      </tr></thead><tbody>${filas}
+        <tr><td>1 pack</td><td><span class="pill no">0%</span></td>
+          <td>${clp(prod.p_promo)}</td><td>${clp(t0?.p_botella||Math.round(prod.p_promo/(prod.uds_pack||1)))}</td></tr>
+      </tbody></table></div>`;
   }
 
   el.innerHTML = `
-    <div class="mg">
-      <div class="met ${(tramo.desc_pct||0)>0?'ok':''} full">
-        <div class="ml">Precio en carrito</div>
-        <div class="mv">${clp(tramo.p_carrito)}</div>
-        <div class="ms">${cant} pack${cant>1?'s':''} · ${pp(tramo.desc_pct)} RC</div>
+    <!-- Precio principal -->
+    <div class="precio-principal${tieneRC?'':' sin-rc'}">
+      <div class="pp-left">
+        <div class="pp-label">${tieneRC?'Precio con RC':'Precio catálogo'}</div>
+        <div class="pp-valor">${clp(tramo.p_carrito)}</div>
+        <div class="pp-sub">${cant} pack${cant>1?'s':''} · ${prod.uds_pack*cant} unidades</div>
       </div>
+      <div class="pp-right">
+        <div class="pp-badge">${tieneRC ? pp(tramo.desc_pct)+' OFF' : 'Sin descuento RC'}</div>
+      </div>
+    </div>
+
+    <!-- Métricas secundarias 3 col -->
+    <div class="mg3">
       <div class="met">
         <div class="ml">$/botella</div>
         <div class="mv">${clp(tramo.p_botella)}</div>
-        <div class="ms">${prod.uds_pack} und · ${prod.ml_unidad}ml</div>
+        <div class="ms">${prod.ml_unidad}ml</div>
       </div>
       <div class="met">
         <div class="ml">$/litro</div>
         <div class="mv">${clp(tramo.p_litro)}</div>
-        <div class="ms">${Math.round(prod.uds_pack * cant * prod.ml_unidad / 100) / 10} litros</div>
+        <div class="ms">${Math.round(prod.uds_pack*cant*prod.ml_unidad/100)/10}L</div>
       </div>
       <div class="met az">
         <div class="ml">Neto s/imp</div>
         <div class="mv">${clp(tramo.neto)}</div>
-        <div class="ms">Recupero IVA B2B</div>
+        <div class="ms">B2B</div>
       </div>
-      <div class="met">
-        <div class="ml">Total pedido</div>
-        <div class="mv">${clp((tramo.p_carrito||0)*cant)}</div>
-        <div class="ms">${prod.uds_pack * cant} unidades</div>
-      </div>
-      ${(tramo.desc_pct||0)>0?`<div class="met ah">
+    </div>
+
+    ${tieneRC ? `<div class="ahorro-row">
+      <div class="met ah">
         <div class="ml">Ahorro vs promo</div>
         <div class="mv">${clp(tramo.ah_promo)}</div>
-        <div class="ms">por pack · ${clp((tramo.ah_promo||0)*cant)} total</div>
-      </div>`:''}
+        <div class="ms">× ${cant} = ${clp((tramo.ah_promo||0)*cant)}</div>
+      </div>
       ${tramo.ah_lista?`<div class="met ah">
         <div class="ml">Ahorro vs lista</div>
         <div class="mv">${clp(tramo.ah_lista)}</div>
-        <div class="ms">${pp(tramo.ah_lista_p)} descuento total</div>
-      </div>`:''}
+        <div class="ms">${pp(tramo.ah_lista_p)} total</div>
+      </div>`:'<div></div>'}
+    </div>` : ''}
+
+    <!-- Tributario colapsable -->
+    <div class="trib-toggle" onclick="toggleTrib(this)">
+      <span>Desglose tributario</span>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg>
     </div>
-    <div class="trib"><div class="trib-t">Desglose tributario</div>
+    <div class="trib-body">
       <div class="tr"><span>Neto</span><span>${clp(tramo.neto)}</span></div>
       <div class="tr"><span>IVA 19%</span><span>${clp(Math.round((tramo.neto||0)*.19))}</span></div>
       <div class="tr"><span>ILA 20.5%</span><span>${clp(Math.round((tramo.neto||0)*.205))}</span></div>
-      <div class="tr tot"><span>Total con imp.</span><span>${clp(tramo.p_carrito)}</span></div>
+      <div class="tr tot"><span>Total c/imp</span><span>${clp(tramo.p_carrito)}</span></div>
     </div>
+
     ${arg?`<div class="arg">${arg}</div>`:''}
-    ${tramosHtml}`;
+    ${tablaHtml}`;
 }
 
+function toggleTrib(el) {
+  el.classList.toggle('open');
+  el.nextElementSibling.classList.toggle('vis');
+}
+
+// ── Render card ───────────────────────────────────────────────
 function renderCard(prod) {
-  const cantidades = [...new Set(prod.tramos.map(t => t.cant))].sort((a,b)=>a-b);
-  const cantDef   = cantidades[0] || 1;
-  const mejorCant = prod.tramos.reduce((a,b) => ((b.p_litro||9999) < (a.p_litro||9999) ? b : a), prod.tramos[0])?.cant || cantDef;
+  const cants   = [...new Set(prod.tramos.map(t=>t.cant))].sort((a,b)=>a-b);
+  const cantDef = cants[0]||1;
+  const mejorC  = prod.tramos.reduce((a,b)=>((b.p_litro||9999)<(a.p_litro||9999)?b:a),prod.tramos[0])?.cant||cantDef;
+  const t0      = prod.tramos.find(t=>!t.desc_pct||t.desc_pct===0)||prod.tramos[0];
+  const col     = vc(prod.varietal);
+
   const div = document.createElement('div');
   div.className = 'pcard';
-  div.dataset.nombre = prod.nombre.toLowerCase();
-  div.dataset.rc     = prod.tiene_rc ? 'si' : 'no';
-  div.dataset.prog   = (prod.programa||'').toLowerCase();
-  div.dataset.fmt    = prod.formato;
-  div.dataset.var    = (prod.varietal||'').toLowerCase();
-  const tagRC = prod.tiene_rc
-    ? `<span class="tag tag-rc">RC</span><span class="tag tag-prog">${prod.programa}</span>`
-    : `<span class="tag tag-fijo">Precio fijo</span>`;
-  const t0 = prod.tramos.find(t => !t.desc_pct || t.desc_pct===0) || prod.tramos[0];
+  div.dataset.n = prod.nombre.toLowerCase();
+  div.dataset.r = prod.tiene_rc?'1':'0';
+  div.dataset.p = (prod.programa||'').toLowerCase();
+  div.dataset.f = prod.formato;
+  div.dataset.v = (prod.varietal||'').toLowerCase();
+
   div.innerHTML = `
     <div class="pcard-hdr" onclick="toggleCard(this.closest('.pcard'))">
       <div class="pnombre">
         <h3>${prod.nombre}</h3>
-        <div class="tags">${tagRC}
-          <span class="tag tag-var" style="background:${varColor(prod.varietal).b};color:${varColor(prod.varietal).t}">
-            <span style="font-size:8px;margin-right:3px">&#9679;</span>${prod.varietal}
+        <div class="tags">
+          ${prod.tiene_rc
+            ? `<span class="tag tag-rc">RC</span>`
+            : `<span class="tag tag-fijo">Precio fijo</span>`}
+          <span class="tag" style="background:${col.b};color:${col.t}">
+            <svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="${col.t}"/></svg>
+            ${prod.varietal}
           </span>
-          <span class="tag tag-fmt">${prod.formato}</span>
+          <span class="tag" style="background:var(--gris2);color:var(--muted)">${prod.formato}</span>
         </div>
       </div>
       <div class="pprecios">
@@ -408,163 +488,119 @@ function renderCard(prod) {
       <span class="chev">▾</span>
     </div>
     <div class="pcard-body">
-      ${prod.tiene_rc && cantidades.length > 1 ? `<div class="cant-wrap">
+      ${prod.tiene_rc && cants.length>1 ? `<div class="cant-wrap">
         <span class="cant-lbl">Packs:</span>
-        <div class="chips" id="chips-${prod.nombre.replace(/[^a-zA-Z0-9]/g,'_')}">
-          ${cantidades.map(c=>`<span class="chip${c===cantDef?' sel':''}${c===mejorCant?' best':''}"
-            onclick="selChip(this,${c})" title="${c===mejorCant?'Mejor $/litro':''}">
-            ${c}${c===mejorCant?' ★':''}</span>`).join('')}
-          <input class="cant-inp" type="number" min="1" max="999" placeholder="otro"
+        <div class="chips">
+          ${cants.map(c=>`<span class="chip${c===cantDef?' sel':''}${c===mejorC?' best':''}"
+            onclick="selChip(this,${c})">${c}${c===mejorC?' ★':''}</span>`).join('')}
+          <input class="cant-inp" type="number" min="1" max="999" placeholder="…"
             onchange="selManual(this,+this.value)">
         </div></div>` : ''}
-      <div class="metricas" id="res-${prod.nombre.replace(/[^a-zA-Z0-9]/g,'_')}"></div>
+      <div class="det" id="d_${prod.nombre.replace(/[^a-zA-Z0-9]/g,'_')}"></div>
     </div>`;
-  div._prod = prod; div._cant = cantDef;
+
+  div._prod = prod;
+  div._cant = cantDef;
   return div;
 }
 
 function toggleCard(card) {
   card.classList.toggle('open');
   if (card.classList.contains('open'))
-    renderResultado(card._prod, card._cant, card.querySelector('.metricas'));
+    renderDetalle(card._prod, card._cant, card.querySelector('.det'));
 }
 function selChip(el, cant) {
   el.closest('.chips').querySelectorAll('.chip').forEach(c=>c.classList.remove('sel'));
   el.classList.add('sel');
   const card = el.closest('.pcard');
-  if (!card) return;
+  if(!card) return;
   card._cant = cant;
-  if (card.classList.contains('open'))
-    renderResultado(card._prod, cant, card.querySelector('.metricas'));
+  if(card.classList.contains('open'))
+    renderDetalle(card._prod, cant, card.querySelector('.det'));
 }
 function selManual(el, cant) {
-  if (!cant || cant < 1) return;
+  if(!cant||cant<1) return;
   el.closest('.chips')?.querySelectorAll('.chip').forEach(c=>c.classList.remove('sel'));
   const card = el.closest('.pcard');
-  if (!card) return;
+  if(!card) return;
   card._cant = cant;
-  if (card.classList.contains('open'))
-    renderResultado(card._prod, cant, card.querySelector('.metricas'));
+  if(card.classList.contains('open'))
+    renderDetalle(card._prod, cant, card.querySelector('.det'));
 }
 
-function setF(tipo, val, btn) {
-  FILTROS[tipo] = val;
-  btn.closest('.filtros').querySelectorAll('.fb').forEach(b=>{
-    b.classList.remove('act','act-v','act-f');
-    // Restaurar color original de botones varietal
-    if (b.classList.contains('fb-var') && b.dataset.varColor) {
-      const c = JSON.parse(b.dataset.varColor);
-      b.style.setProperty('--vt', c.t);
-      b.style.setProperty('--vb', c.b);
-    }
-  });
-  btn.classList.add(tipo==='prog'?'act':tipo==='fmt'?'act-f':'act-v');
-  aplicarFiltros();
-  actualizarBadgeFiltros();
-}
-function aplicarFiltros() {
-  const q = (document.getElementById('SI').value||'').toLowerCase();
-  let vis = 0;
-  document.querySelectorAll('.pcard').forEach(card => {
-    const mQ  = card.dataset.nombre.includes(q) || card.dataset.var.includes(q);
-    const rc  = card.dataset.rc === 'si';
-    const prog = card.dataset.prog;
-    let mP = false;
-    const fp = FILTROS.prog;
-    if (fp==='todos') mP=true;
-    else if (fp==='rc')      mP=rc;
-    else if (fp==='sinrc')   mP=!rc;
-    else if (fp==='botell')  mP=prog.includes('botell')||prog.includes('corriente');
-    else if (fp==='finos')   mP=prog.includes('fino');
-    else if (fp==='premium') mP=prog.includes('premium')||prog.includes('super');
-    const mF = FILTROS.fmt==='todos' || card.dataset.fmt===FILTROS.fmt;
-    const mV = FILTROS.var==='todos' || card.dataset.var===FILTROS.var.toLowerCase();
-    const show = mQ && mP && mF && mV;
-    card.style.display = show ? '' : 'none';
-    if (show) vis++;
-  });
-  document.getElementById('HM').textContent = `${vis} productos`;
-}
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('SI').addEventListener('input', aplicarFiltros);
-});
-
+// ── Cargar datos ──────────────────────────────────────────────
 async function init() {
   try {
-    const dataUrl = new URL('./data.json', location.href).href;
-    const res  = await fetch(dataUrl);
+    const res  = await fetch(new URL('./data.json', location.href).href);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data  = await res.json();
     const prods = data.productos;
     const meta  = data.meta;
 
-    document.getElementById('LOADING').style.display = 'none';
-    document.getElementById('APP').style.display = 'block';
+    document.getElementById('LOADING').style.display='none';
+    document.getElementById('APP').style.display='block';
 
     const lista  = document.getElementById('LISTA');
     const fmtSet = new Map(), varSet = new Map();
-    let nR=0, nS=0, nB=0, nFi=0, nP=0, sum=0;
+    let nR=0,nS=0,nB=0,nFi=0,nP=0,sum=0;
 
     prods.forEach(prod => {
-      const prog = (prod.programa||'').toLowerCase();
-      if (prod.tiene_rc) nR++; else nS++;
-      if (prog.includes('botell')||prog.includes('corriente')) nB++;
-      if (prog.includes('fino')) nFi++;
-      if (prog.includes('premium')||prog.includes('super')) nP++;
-      sum += prod.p_promo || 0;
-      fmtSet.set(prod.formato, (fmtSet.get(prod.formato)||0)+1);
-      varSet.set(prod.varietal, (varSet.get(prod.varietal)||0)+1);
+      const pg = (prod.programa||'').toLowerCase();
+      if(prod.tiene_rc) nR++; else nS++;
+      if(pg.includes('botell')||pg.includes('corriente')) nB++;
+      if(pg.includes('fino')) nFi++;
+      if(pg.includes('premium')||pg.includes('super')) nP++;
+      sum += prod.p_promo||0;
+      fmtSet.set(prod.formato,(fmtSet.get(prod.formato)||0)+1);
+      varSet.set(prod.varietal,(varSet.get(prod.varietal)||0)+1);
       lista.appendChild(renderCard(prod));
       PRODS.push(prod);
     });
 
     const tot = prods.length;
-    document.getElementById('cT').textContent  = tot;
-    document.getElementById('cR').textContent  = nR;
-    document.getElementById('cS').textContent  = nS;
-    document.getElementById('cB').textContent  = nB;
-    document.getElementById('cFi').textContent = nFi;
-    document.getElementById('cP').textContent  = nP;
+    ['cT','cR','cS','cB','cFi','cP'].forEach((id,i)=>{
+      const el=document.getElementById(id);
+      if(el) el.textContent=[tot,nR,nS,nB,nFi,nP][i];
+    });
 
-    const ff = document.getElementById('F_FMT');
-    ['x1','x4','x6','x8','x12','x24'].forEach(f => {
-      if (!fmtSet.has(f)) return;
-      const b = document.createElement('button');
-      b.className = 'fb';
-      b.onclick = function() { setF('fmt', f, this); };
-      b.innerHTML = `${f} <span class="cnt">${fmtSet.get(f)}</span>`;
+    // Botones formato
+    const ff=document.getElementById('F_FMT');
+    ['x1','x4','x6','x8','x12','x24'].forEach(f=>{
+      if(!fmtSet.has(f)) return;
+      const b=document.createElement('button');
+      b.className='fb'; b.onclick=function(){setF('fmt',f,this);};
+      b.innerHTML=`${f} <span class="cnt">${fmtSet.get(f)}</span>`;
       ff.appendChild(b);
     });
 
-    const fv = document.getElementById('F_VAR');
-    [...varSet.entries()].sort((a,b)=>b[1]-a[1]).forEach(([v,n]) => {
-      const c = varColor(v);
-      const b = document.createElement('button');
-      b.className = 'fb fb-var';
-      b.dataset.varColor = JSON.stringify(c);
-      b.style.setProperty('--vt', c.t);
-      b.style.setProperty('--vb', c.b);
-      b.onclick = function() { setF('var', v, this); };
-      b.innerHTML = `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${c.t};margin-right:4px;vertical-align:middle;flex-shrink:0"></span>${v} <span class="cnt">${n}</span>`;
+    // Botones varietal con color
+    const fv=document.getElementById('F_VAR');
+    [...varSet.entries()].sort((a,b)=>b[1]-a[1]).forEach(([v,n])=>{
+      const c=vc(v);
+      const b=document.createElement('button');
+      b.className='fb'; b._vc=c;
+      b.style.setProperty('--vt',c.t);
+      b.style.setProperty('--vb',c.b);
+      b.onclick=function(){setF('var',v,this);};
+      b.innerHTML=`<svg width="8" height="8" viewBox="0 0 8 8" style="margin-right:4px;vertical-align:middle;flex-shrink:0"><circle cx="4" cy="4" r="4" fill="${c.t}"/></svg>${v} <span class="cnt">${n}</span>`;
       fv.appendChild(b);
     });
 
-    document.getElementById('RES').innerHTML = `
+    // Resumen
+    document.getElementById('RES').innerHTML=`
       <div class="rc"><div class="rv">${tot}</div><div class="rl">Productos</div></div>
       <div class="rc"><div class="rv">${nR}</div><div class="rl">Con RC</div></div>
-      <div class="rc"><div class="rv">${nS}</div><div class="rl">Precio fijo</div></div>
+      <div class="rc"><div class="rv">${nS}</div><div class="rl">Sin RC</div></div>
       <div class="rc"><div class="rv">$${Math.round(sum/tot).toLocaleString('es-CL')}</div><div class="rl">Promo prom.</div></div>`;
 
-    const fecha = meta.generado ? meta.generado.replace('T',' ').substring(0,16) : '';
-    document.getElementById('HM').innerHTML = `${tot} productos<br>Datos: ${fecha}`;
-    document.getElementById('FOOTER').innerHTML =
-      `IVA 19% + ILA 20.5% (factor 1.395) · Descuentos RC sobre precio promocional vigente<br>Actualizado: ${fecha}`;
+    const fecha = meta.generado?meta.generado.replace('T',' ').substring(0,16):'';
+    document.getElementById('HM').innerHTML=`${tot} prod.<br>${fecha}`;
+    document.getElementById('FOOTER').innerHTML=
+      `IVA 19% + ILA 20.5% · RC sobre precio promocional · ${fecha}`;
 
-  } catch (err) {
-    document.getElementById('LOADING').innerHTML =
-      `<div class="error"><strong>No se pudo cargar el catálogo.</strong><br><br>
-      Asegúrate de que el archivo <code>data.json</code> está en la misma carpeta.<br>
-      Error: ${err.message}</div>`;
+  } catch(err) {
+    document.getElementById('LOADING').innerHTML=
+      `<div class="error"><strong>No se pudo cargar el catálogo.</strong><br>Error: ${err.message}</div>`;
   }
 }
 init();
